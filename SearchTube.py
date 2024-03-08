@@ -16,7 +16,6 @@ pd.set_option('display.float_format', lambda x: '%.3f' % x)
 import math
 import time
 from googleapiclient.discovery import build
-youtube = build('youtube', 'v3', developerKey=api_key)
 
 
 # One way to circumvent Youtube's search endpoint limit on requesting large amoutn of data
@@ -214,6 +213,8 @@ def tube_channel(channel_id):
 
 # A function that organize the fetched data into one single dataframe
 def searchtube(api_key, queries, type, date_ranges, part, maxResults, relevanceLanguage, order):
+   youtube = build('youtube', 'v3', developerKey=api_key)
+
     # Sending the searching video request
     videos, video_IDs, channel_IDs = tube_keyword(api_key, queries, type, date_ranges, part, maxResults, relevanceLanguage, order)
 
