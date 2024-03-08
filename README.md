@@ -1,2 +1,2 @@
 # Tube-scraper
-Youtube v3 search, video, channel endpoints
+A script that search all Youtube videos and metadata YouTube's v3 API's search, video, and channel endpoints
