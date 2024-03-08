@@ -254,7 +254,7 @@ date_ranges = [(start_date.strftime("%Y-%m-%dT%H:%M:%SZ"), end_date.strftime("%Y
 part = 'snippet'
 maxResults = 50
 relevanceLanguage= # 'en' is the default
-order = # see search the documentation
+order = # None or default is "relevance"
 
 # Hit run
 searchtube(api_key, queries, type, date_ranges, part, maxResults, relevanceLanguage, order)
