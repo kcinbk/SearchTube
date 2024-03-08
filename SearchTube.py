@@ -213,8 +213,6 @@ def tube_channel(channel_id):
 
 # A function that organize the fetched data into one single dataframe
 def searchtube(api_key, queries, type, date_ranges, part, maxResults, relevanceLanguage, order):
-   youtube = build('youtube', 'v3', developerKey=api_key)
-
     # Sending the searching video request
     videos, video_IDs, channel_IDs = tube_keyword(api_key, queries, type, date_ranges, part, maxResults, relevanceLanguage, order)
 
@@ -256,6 +254,8 @@ part = 'snippet'
 maxResults = 50
 relevanceLanguage= # 'en' is the default
 order = # None or default is "relevance"
+
+youtube = build('youtube', 'v3', developerKey=api_key)
 
 # Hit run
 searchtube(api_key, queries, type, date_ranges, part, maxResults, relevanceLanguage, order)
