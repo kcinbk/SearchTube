@@ -18,9 +18,8 @@ import time
 from googleapiclient.discovery import build
 
 
-# One way to circumvent Youtube's search endpoint limit on requesting large amoutn of data
-# is to saearch employ interval searching and loop through the endpoint, 
-# meaning that well be searching each 24 hours
+# To circumvent Youtube's search endpoint limit on requesting large amounts of data,
+# this function points to a 24-hour day search dateframe.
 def generate_date_ranges(start_date, end_date, interval_days):
     current_date = start_date
     while current_date <= end_date:
@@ -29,7 +28,7 @@ def generate_date_ranges(start_date, end_date, interval_days):
         current_date = next_date
 
 
-# This function houses api calls to the search.list() endpoint
+# This function houses API calls for the search.list() endpoint
 def tube_keyword(api, q, type, date_ranges, part, maxResults, relevanceLanguage, order):
     videos = []
     video_IDs= []
@@ -76,7 +75,6 @@ def tube_keyword(api, q, type, date_ranges, part, maxResults, relevanceLanguage,
                     if item['snippet']['channelId'] not in channel_IDs:
                         channel_IDs.append(item['snippet']['channelId'])
 
-            # Line for the pagination calls (key difference is pageToken=next_page_token)
             next_page_token = search_response.get('nextPageToken')
             
             while next_page_token is not None:
@@ -117,7 +115,7 @@ def tube_keyword(api, q, type, date_ranges, part, maxResults, relevanceLanguage,
     return videos, video_IDs, channel_IDs
 
 
-# This function houses api calls to the video.list() endpoint
+# This function houses API calls for the video.list() endpoint
 def tube_meta(video_id):    
     all_responses = []  
 
@@ -165,7 +163,7 @@ def tube_meta(video_id):
 
 
 
-# This function houses api calls to the channel.list() endpoint
+# This function houses API calls for the channel.list() endpoint
 def tube_channel(channel_id):
     all_responses = []  
     chunk_size = 50
@@ -211,7 +209,7 @@ def tube_channel(channel_id):
 
 
 
-# A function that organize the fetched data into one single dataframe
+# Organize all returned data into one single dataframe
 def searchtube(api_key, queries, type, date_ranges, part, maxResults, relevanceLanguage, order):
     # Sending the searching video request
     videos, video_IDs, channel_IDs = tube_keyword(api_key, queries, type, date_ranges, part, maxResults, relevanceLanguage, order)
