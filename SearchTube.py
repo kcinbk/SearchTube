@@ -18,8 +18,9 @@ import time
 from googleapiclient.discovery import build
 
 
-# To circumvent Youtube's search endpoint limit on requesting large amounts of data,
-# this function points to a 24-hour day search dateframe.
+# To avoid Youtube's limit on requesting large amounts of data,
+# it's necessary to chunksize the timeframe in each call.
+# This function allows searching query within a 24-hour window in each API call. 
 def generate_date_ranges(start_date, end_date, interval_days):
     current_date = start_date
     while current_date <= end_date:
@@ -28,7 +29,7 @@ def generate_date_ranges(start_date, end_date, interval_days):
         current_date = next_date
 
 
-# This function houses API calls for the search.list() endpoint
+# Communicate with Youtube's search.list() endpoint
 def tube_keyword(api, q, type, date_ranges, part, maxResults, relevanceLanguage, order):
     videos = []
     video_IDs= []
@@ -37,8 +38,8 @@ def tube_keyword(api, q, type, date_ranges, part, maxResults, relevanceLanguage,
     for i, (publishedAfter, publishedBefore) in enumerate(date_ranges):
         print(f"Processing videos for interval {i + 1} - published between {publishedAfter} and {publishedBefore}")
 
-        # Initiate the initial API call        
-        # 'queries' is a list of q separated by commas, thus allowing searching mulitple words or phrases at one go
+        # Initiate the initial API call to the search endpoint       
+        # Here, 'queries' is a list of q separated by commas, thus allowing searching mulitple words or phrases at one go
         for query in queries:
             print(f"Searching videos mentioning this keyword or phrases: {query}")
             search_response = youtube.search().list(
@@ -90,7 +91,7 @@ def tube_keyword(api, q, type, date_ranges, part, maxResults, relevanceLanguage,
                     pageToken=next_page_token
                 ).execute()
                 
-                # Unpack pagination response
+                # Unpack responses from subsequent paginations
                 for item in search_response['items']:
                     if item['id']['videoId'] not in video_IDs:
                         video_data = {
@@ -109,13 +110,13 @@ def tube_keyword(api, q, type, date_ranges, part, maxResults, relevanceLanguage,
                         if item['snippet']['channelId'] not in channel_IDs:
                             channel_IDs.append(item['snippet']['channelId'])
                 
-                # Get the next page token, if there is one
+                # Get the next page token, if there is any
                 next_page_token = search_response.get('nextPageToken')
 
     return videos, video_IDs, channel_IDs
 
 
-# This function houses API calls for the video.list() endpoint
+# Communicate with Youtube's video.list() endpoint for individual videos' meatadata
 def tube_meta(video_id):    
     all_responses = []  
 
@@ -163,7 +164,7 @@ def tube_meta(video_id):
 
 
 
-# This function houses API calls for the channel.list() endpoint
+# # Communicate with Youtube's channel.list() endpoint for channel metadata
 def tube_channel(channel_id):
     all_responses = []  
     chunk_size = 50
@@ -209,7 +210,7 @@ def tube_channel(channel_id):
 
 
 
-# Organize all returned data into one single dataframe
+# This function organizes all returned data and metadata into one single dataframe
 def searchtube(api_key, queries, type, date_ranges, part, maxResults, relevanceLanguage, order):
     # Sending the searching video request
     videos, video_IDs, channel_IDs = tube_keyword(api_key, queries, type, date_ranges, part, maxResults, relevanceLanguage, order)
@@ -220,22 +221,23 @@ def searchtube(api_key, queries, type, date_ranges, part, maxResults, relevanceL
     # Sending the channel metadata request
     channel_metadata = tube_channel(channel_IDs)
 
-    # Put video into a dataframea
+    # Video -> dataframea
     df_tube = pd.DataFrame(videos)
 
-    # Put video metadata into a dataframe
+    # Video metadata -> dataframe
     df_meta = pd.json_normalize(video_metadata)
 
-    # Put channel metadata into a dataframe
+    # Channel metadata -> dataframe
     df_channel = pd.json_normalize(channel_metadata)
 
-    # Merge dataframes, drop duplicated and clean up the columns a bit
+    # Merge all three dataframes, drop duplicated and clean up the columns a bit
     df = pd.merge(df_tube, df_meta, how='left', on='video_id')
     df = pd.merge(df, df_channel, how='left', left_on='channelId', right_on='channel_id')
     df = df.drop(columns=['channelId','channelTitle'])
     df = df.drop_duplicates(subset='video_id', keep='first')
 
     return df
+
 
 
 # fill out the following params:
@@ -251,9 +253,9 @@ date_ranges = [(start_date.strftime("%Y-%m-%dT%H:%M:%SZ"), end_date.strftime("%Y
 part = 'snippet'
 maxResults = 50
 relevanceLanguage= # 'en' is the default
-order = # None or default is "relevance"
+order = # None or default is "relevance", other options include 'date', 'rating', 'title', 'videoCount', and 'viewCount'
 
 youtube = build('youtube', 'v3', developerKey=api_key)
 
 # Hit run
-searchtube(api_key, queries, type, date_ranges, part, maxResults, relevanceLanguage, order)
+df = searchtube(api_key, queries, type, date_ranges, part, maxResults, relevanceLanguage, order)
