@@ -206,10 +206,10 @@ def searchtube(api_key, queries, start_date, end_date, relevanceLanguage, order)
 
 
 if __name__ == "__main__":
-    api_key = 'Youtube v2'
-    queries = 'search query'
-    start_date= '2023-01-1'
-    end_date= '2023-12-15'
-    relevanceLanguage= 'en'
+    api_key = '1233211234567'
+    queries = 'search query' 
+    start_date= '2023-01-1' # date format example
+    end_date= '2023-12-15' # date format example
+    relevanceLanguage= None
     order = None 
     df = searchtube(api_key, queries, start_date, end_date, relevanceLanguage, order)
