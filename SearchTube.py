@@ -211,5 +211,5 @@ if __name__ == "__main__":
     start_date= '2023-01-1'
     end_date= '2023-12-15'
     relevanceLanguage= 'en'
-    order = '# None or default is "relevance", other options include "date", "rating", "title", "videoCount", and "viewCount"'
-    df =' searchtube(api_key, queries, start_date, end_date, relevanceLanguage, order)'
+    order = None 
+    df = searchtube(api_key, queries, start_date, end_date, relevanceLanguage, order)
