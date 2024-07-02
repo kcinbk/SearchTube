@@ -1,2 +1,2 @@
-# Tube-scraper
-A script that searches all Youtube videos and metadata YouTube's v3 API's search, video, and channel endpoints
+# Tube-searcher
+A python-based wrapper to request Youtube video and channel metada through YouTube's v3 endpoints.
