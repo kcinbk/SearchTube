@@ -1,4 +1,4 @@
-# Tube-searcher
+# SearchTube
 
 SearchTube is a Python-based wrapper to search YouTube videos or channels by keywords. The returning data is structured in pandas DataFrames.
 
