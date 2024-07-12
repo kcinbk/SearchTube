@@ -9,7 +9,7 @@ import time
 from googleapiclient.discovery import build
 
 
-# Chunksize search period
+# Chunksize search periods
 def generate_date_ranges(start_date, end_date):
     date_ranges = []
     start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d")
