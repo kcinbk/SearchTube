@@ -55,8 +55,8 @@ def tube_keyword(api_key, queries, start_date, end_date, relevanceLanguage, orde
                 if item['id']['videoId'] not in video_IDs:
                     video_data = {
                         'video_id': item['id']['videoId'],
-                        'title': item['snippet']['title'],
-                        'description': item['snippet']['description'],
+                        'truncated_title': item['snippet']['title'],
+                        'truncated_description': item['snippet']['description'],
                         'publishedAt': item['snippet']['publishedAt'],
                         'channelId': item['snippet']['channelId'],
                         'channelTitle': item['snippet']['channelTitle'],
@@ -85,8 +85,8 @@ def tube_keyword(api_key, queries, start_date, end_date, relevanceLanguage, orde
                     if item['id']['videoId'] not in video_IDs:
                         video_data = {
                             'video_id': item['id']['videoId'],
-                            'title': item['snippet']['title'],
-                            'description': item['snippet']['description'],
+                            'truncated_title': item['snippet']['title'],
+                            'truncated_description': item['snippet']['description'],
                             'publishedAt': item['snippet']['publishedAt'],
                             'channelId': item['snippet']['channelId'],
                             'channelTitle': item['snippet']['channelTitle'],
@@ -128,6 +128,8 @@ def tube_meta(video_id, api_key):
         for item in each_response['items']:
             v_metadata = {
                 'video_id': item['id'],
+                'full_title': item['snippet']['title'],
+                'full_description': item['snippet']['description'],
                 'video_defaultLanguage': item['snippet'].get('defaultLanguage', np.nan),
                 'video_defaultAudioLanguage': item['snippet'].get('defaultAudioLanguage', np.nan),
                 'video_categoryId': item['snippet'].get('categoryId', np.nan),
