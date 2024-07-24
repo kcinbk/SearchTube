@@ -56,7 +56,7 @@ def tube_keyword(api_key, queries, start_date, end_date, relevanceLanguage, orde
                     video_data = {
                         'video_id': item['id']['videoId'],
                         'truncated_title': item['snippet']['title'],
-                        'truncated_description': item['snippet']['description'],
+                        'truncated_description': item['snippet'].get('description', np.nan),
                         'publishedAt': item['snippet']['publishedAt'],
                         'channelId': item['snippet']['channelId'],
                         'channelTitle': item['snippet']['channelTitle'],
@@ -86,7 +86,7 @@ def tube_keyword(api_key, queries, start_date, end_date, relevanceLanguage, orde
                         video_data = {
                             'video_id': item['id']['videoId'],
                             'truncated_title': item['snippet']['title'],
-                            'truncated_description': item['snippet']['description'],
+                            'truncated_description': item['snippet'].get('description', np.nan)
                             'publishedAt': item['snippet']['publishedAt'],
                             'channelId': item['snippet']['channelId'],
                             'channelTitle': item['snippet']['channelTitle'],
@@ -129,7 +129,7 @@ def tube_meta(video_id, api_key):
             v_metadata = {
                 'video_id': item['id'],
                 'full_title': item['snippet']['title'],
-                'full_description': item['snippet']['description'],
+                'full_description': item['snippet'].get('description', np.nan),
                 'video_defaultLanguage': item['snippet'].get('defaultLanguage', np.nan),
                 'video_defaultAudioLanguage': item['snippet'].get('defaultAudioLanguage', np.nan),
                 'video_categoryId': item['snippet'].get('categoryId', np.nan),
@@ -171,7 +171,7 @@ def tube_channel(channel_id, api_key):
         for item in each_response['items']:
             c_metadata={
                 'channel_id':item['id'],
-                'channel_title': item['snippet'].get('title', np.nan),
+                'channel_title': item['snippet']['title'],
                 'channel_description': item['snippet'].get('description', np.nan),
                 'channel_publishedAt': item['snippet'].get('publishedAt', np.nan),
                 'channel_viewCount': item['statistics'].get('viewCount', np.nan),
