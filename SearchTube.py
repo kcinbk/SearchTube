@@ -86,7 +86,7 @@ def tube_keyword(api_key, queries, start_date, end_date, relevanceLanguage, orde
                         video_data = {
                             'video_id': item['id']['videoId'],
                             'truncated_title': item['snippet']['title'],
-                            'truncated_description': item['snippet'].get('description', np.nan)
+                            'truncated_description': item['snippet'].get('description', np.nan),
                             'publishedAt': item['snippet']['publishedAt'],
                             'channelId': item['snippet']['channelId'],
                             'channelTitle': item['snippet']['channelTitle'],
