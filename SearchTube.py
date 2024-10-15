@@ -131,6 +131,8 @@ def tube_meta(video_id, api_key):
                 'full_title': item['snippet']['title'],
                 'full_description': item['snippet'].get('description', np.nan),
                 'video_defaultLanguage': item['snippet'].get('defaultLanguage', np.nan),
+                'channel_id':item['snippet'].get('channelId', np.nan),
+                'channel_title': item['snippet'].get('channelTitle', np.nan),
                 'video_defaultAudioLanguage': item['snippet'].get('defaultAudioLanguage', np.nan),
                 'video_categoryId': item['snippet'].get('categoryId', np.nan),
                 'video_duration': item['contentDetails'].get('duration', np.nan),
