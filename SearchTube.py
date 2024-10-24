@@ -26,7 +26,7 @@ def generate_date_ranges(start_date, end_date):
 
 
 # Communicate with Youtube's search.list() endpoint
-def tube_keyword(api_key, queries, start_date, end_date, relevanceLanguage, order):
+def tube_keyword(api_key, queries, start_date, end_date, relevanceLanguage, order, channelId=None):
     youtube = build('youtube', 'v3', developerKey=api_key)
     videos = []
     video_IDs= []
@@ -40,6 +40,7 @@ def tube_keyword(api_key, queries, start_date, end_date, relevanceLanguage, orde
             print(f"Searching videos mentioning this keyword or phrases: {query}")
             search_response = youtube.search().list(
                 q=query,
+                channelId = channelId,
                 type='video',
                 publishedAfter=publishedAfter,
                 publishedBefore=publishedBefore,
@@ -71,6 +72,7 @@ def tube_keyword(api_key, queries, start_date, end_date, relevanceLanguage, orde
             while next_page_token is not None:
                 search_response = youtube.search().list(
                     q=query,
+                    channelId = channelId,
                     type='video',
                     publishedAfter=publishedAfter,
                     publishedBefore=publishedBefore,
@@ -130,6 +132,7 @@ def tube_meta(video_id, api_key):
                 'video_id': item['id'],
                 'full_title': item['snippet']['title'],
                 'full_description': item['snippet'].get('description', np.nan),
+                'publishedAt': item['snippet'].get('publishedAt', np.nan),
                 'video_defaultLanguage': item['snippet'].get('defaultLanguage', np.nan),
                 'channel_id':item['snippet'].get('channelId', np.nan),
                 'channel_title': item['snippet'].get('channelTitle', np.nan),
@@ -187,7 +190,7 @@ def tube_channel(channel_id, api_key):
 
 
 # This function organizes all returned data and metadata into one single dataframe
-def searchtube(api_key, queries, start_date, end_date, relevanceLanguage, order):
+def searchtube(api_key, queries, start_date, end_date, relevanceLanguage, order, channelId=None):
     # Sending the searching video request
     videos, video_IDs, channel_IDs = tube_keyword(api_key, queries, start_date, end_date, relevanceLanguage, order)
     # Sending the video metadata request
