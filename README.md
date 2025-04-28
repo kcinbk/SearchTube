@@ -21,12 +21,12 @@ pip install git+https://github.com/kcinbk/SearchTube.git
 
 ### Importing
 ````python
-import searchYouTube 
+import SearchTube 
 ````
 
 ### Quering YouTube content by multiple keywords
 ````python
-data = searchYouTube.search.fetch_tiktok(client_key, client_secret, search_query, start_date, end_date)
+data = SearchTube.searchtube(client_key, client_secret, search_query, start_date, end_date)
 ````
 
 ## Contact the author
