@@ -5,6 +5,7 @@ setup(
     version="1.0",
     packages=find_packages(),
     author='Keenan Chen',
+    author_email="cyt.keenan@gmail.com",
     install_requires=[
         'pandas',
         'numpy',
