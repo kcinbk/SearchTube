@@ -190,7 +190,7 @@ def tube_channel(channel_id, api_key):
 
 
 # This function organizes all returned data and metadata into one single dataframe
-def searchtube(api_key, queries, start_date, end_date, relevanceLanguage, order, channelId=None):
+def execute_search(api_key, queries, start_date=None, end_date=None, relevanceLanguage=None, order=None, channelId=None):
     # Sending the searching video request
     videos, video_IDs, channel_IDs = tube_keyword(api_key, queries, start_date, end_date, relevanceLanguage, order)
     # Sending the video metadata request
